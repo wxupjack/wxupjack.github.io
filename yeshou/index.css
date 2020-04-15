@@ -1,0 +1,8 @@
+.container{
+    display: flex;
+    margin: 100px;
+    background-color:rgb(160,90,60);
+    text-align:center;
+    flex-direction: column;
+    color: aliceblue;
+}
