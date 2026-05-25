@@ -8,22 +8,17 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 ---
 
 <BaseLayout title="Home" description="wxupjack 的个人博客文章列表。">
-  <section class="page-title">
-    <p class="eyebrow">Blog</p>
-    <h1>文章</h1>
-  </section>
-
   <section class="post-list" aria-label="Blog posts">
     {
       posts.map((post) => (
-        <a class="post-card" href={`/blog/${post.id}/`}>
+        <a class="post-link" href={`/blog/${post.id}/`}>
           <time datetime={post.data.publishDate.toISOString()}>
             {post.data.publishDate.toLocaleDateString('zh-CN')}
           </time>
-          <div>
-            <h2>{post.data.title}</h2>
-            <p>{post.data.description}</p>
-          </div>
+          <span class="post-summary">
+            <span class="post-title">{post.data.title}</span>
+            <span class="post-description">{post.data.description}</span>
+          </span>
         </a>
       ))
     }
