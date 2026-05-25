@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'wxupjack 的个人博客。',
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const navItems = [
+  { href: '/blog/', label: 'Blog' },
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title === 'Home' ? 'wxupjack' : `${title} | wxupjack`}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="wxupjack home">wxupjack</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={pathname === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>Built with Astro.</span>
+      <a href="https://github.com/wxupjack/wxupjack.github.io">GitHub</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="呐喊" description="昏睡键盘击键测试器。">
+  <section class="tool-shell" aria-labelledby="yeshou-title">
+    <div class="yeshou-panel">
+      <h1 id="yeshou-title">呐 喊</h1>
+      <p class="tool-kicker">昏睡键盘击键测试器</p>
+      <p id="combo">臭气值：0</p>
+      <button id="trigger" class="tool-button" type="button">敲一下</button>
+      <img src="/yeshou/chou.jpg" alt="臭死啦！" />
+      <p class="tool-hint">请 佩 戴 耳 机</p>
+    </div>
+  </section>
+
+  <script>
+    const audio = new Audio('/yeshou/chou.mp3');
+    const intervalMs = 500;
+    let pressCount = 0;
+    const comboElement = document.getElementById('combo');
+    const trigger = document.getElementById('trigger');
+
+    function setCombo(value) {
+      if (!comboElement) return;
+
+      comboElement.textContent = `臭气值：${value}`;
+      comboElement.style.fontSize = `${Math.max(value * 2, 16)}px`;
+      audio.volume = Math.max(Math.min(value / 20, 1), 0);
+    }
+
+    function shout(event) {
+      if (event?.type === 'keydown' && event.repeat) return;
+
+      pressCount += 1;
+      setCombo(pressCount);
+
+      if (audio.paused) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }
+
+      window.setTimeout(() => {
+        pressCount -= 1;
+        setCombo(Math.max(pressCount, 0));
+
+        if (pressCount <= 0) {
+          audio.pause();
+        }
+      }, intervalMs);
+    }
+
+    document.addEventListener('keydown', shout);
+    document.addEventListener('touchstart', shout, { passive: true });
+    trigger?.addEventListener('click', shout);
+  </script>
+</BaseLayout>
